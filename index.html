@@ -13,8 +13,7 @@
     button { padding: 10px 20px; font-size: 16px; cursor: pointer; border: none; border-radius: 8px; background-color: #333; color: white; }
     form { margin-top: 30px; }
     label { display: block; margin: 10px 0 5px; }
-    input, textarea { width: 100%; padding: 8px; margin-bottom: 15px; border-radius: 6px; border: 1px solid #ccc; }
-    .hidden { display: none; }
+    input, textarea, select { width: 100%; padding: 8px; margin-bottom: 15px; border-radius: 6px; border: 1px solid #ccc; }
   </style>
 </head>
 <body>
@@ -31,6 +30,7 @@
 
   <form id="voteForm">
     <input type="hidden" name="selectedRobot" id="selectedRobot" value="Robot 1">
+    
     <label for="age">Your Age:</label>
     <input type="number" name="age" id="age" required>
 
@@ -68,14 +68,21 @@
       showRobot(currentIndex);
     }
 
-    // Replace with Google Apps Script Web App URL
+    // ✅ Your actual script URL
     const scriptURL = 'https://script.google.com/macros/s/AKfycbyUep0QldqWNBbJM9MZsUwCX_BOEpEOmGJpFcgoBVivDDzfPsszwRjJ72W435sJmfxZXA/exec';
 
     document.getElementById('voteForm').addEventListener('submit', e => {
       e.preventDefault();
       const formData = new FormData(e.target);
       fetch(scriptURL, { method: 'POST', body: formData })
-        .then(response => alert('Thank you for voting!'))
+        .then(response => {
+          if (response.ok) {
+            alert('Thank you for voting!');
+            e.target.reset();
+          } else {
+            alert('Submission failed. Please try again.');
+          }
+        })
         .catch(error => alert('Error! Please try again.'));
     });
   </script>
